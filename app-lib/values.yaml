@@ -1,0 +1,151 @@
+# Default values for app-lib.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image: ""
+imagePullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+controllerKind: Deployment
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+containerPorts: |-
+  - name: http
+    containerPort: 8080
+    protocol: TCP
+# Uncomment the following to enable remote debugging to a JVM
+#  {{- if .Values.global.debug }}
+#  - name: jdwp
+#    containerPort: 5005
+#    protocol: TCP
+#  {{- end }}
+
+service:
+  type: ClusterIP
+  ports: |-
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+
+env: {}
+# Environment variable configuration. Can be specified as a plain object or as text to be rendered as template code.
+# This example illustrates how we can use template code in our environment definition.
+# env: |-
+#   - name: DATABASE_HOST
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "app-lib.fullname" . }}-database
+#         key: hostname
+#   - name: DATABASE_USERNAME
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "app-lib.fullname" . }}-database
+#         key: username
+#   - name: DATABASE_PASSWORD
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "app-lib.fullname" . }}-database
+#         key: password
+extraEnv: {}
+# Behaves the same as env. It allows additional environment variables to be specified in situations where changing the
+# main `env` is undesirable, e.g. if `env` is a template string, but you want to merge map values from values within the
+# chart hierarchy.
+
+command: ""
+args: ""
+
+volumeMounts: []
+# - mountPath: /data
+#   name: data-volume
+volumes: ""
+# volumes: |-
+#   - name: temp-data-volume
+#     emptyDir: {}
+#
+# Or if you have a persistent volume:
+#
+# volumes: |-
+#   - name: data-volume
+#     persistentVolumeClaim:
+#       claimName: {{ include "app-lib.fullname" . }}-data
+
+ingress:
+  enabled: false
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  servicePort: http
+  hosts:
+  - host: chart-example.local
+    paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: ""
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
