@@ -1,0 +1,46 @@
+name: Publish Chart
+
+on:
+  push:
+    tags: [ "*" ]
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "$GITHUB_ACTOR"
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Package Helm Chart
+        run: |
+          sed -i -e 's/^version:.*/version: ${{ github.ref_name }}/' app-lib/Chart.yaml
+          helm package app-lib
+
+      - name: Check out GitHub Pages Repository
+        uses: actions/checkout@v3
+        with:
+          repository: dylanpiergies/helm-charts
+          token: ${{ secrets.HELM_CHARTS_WRITE_PAT }}
+          path: helm-charts
+          fetch-depth: 0
+
+      - name: Commit and Push to GitHub Pages Repository
+        run: |
+          chart_tgz="$(basename "$(find . -maxdepth 1 -type f -name 'app-lib-*.tgz')")"
+          cp "$chart_tgz" helm-charts/
+          cd helm-charts/
+          git add "$chart_tgz"
+          git commit -m "Publish $chart_tgz"
+          git push
