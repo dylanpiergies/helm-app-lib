@@ -27,10 +27,7 @@ spec:
     securityContext:
       {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 6 }}
     {{- end }}
-    {{- /*
-    TODO: Implement better image spec construction.
-    */}}
-    image: {{ tpl .Values.image . | quote }}
+    image: {{ include "app-lib.image" . | quote }}
     {{- with .Values.imagePullPolicy }}
     imagePullPolicy: {{ . }}
     {{- end }}

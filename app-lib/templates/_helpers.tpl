@@ -75,3 +75,32 @@ Dump an object to YAML or render a string as template code.
 {{- toYaml .value }}
 {{- end }}
 {{- end }}
+
+{{/*
+Build the image reference.
+*/}}
+{{- define "app-lib.image" -}}
+{{- $image := "" -}}
+{{- if kindIs "map" .Values.image -}}
+{{- if .Values.image.registry -}}
+{{- $image = printf "%s/" .Values.image.registry -}}
+{{- else if .Values.global -}}
+{{- if .Values.global.containerRegistry -}}
+{{- $image = printf "%s/" .Values.global.containerRegistry -}}
+{{- end -}}
+{{- end -}}
+{{- if .Values.image.repository -}}
+{{- $image = printf "%s%s" $image .Values.image.repository -}}
+{{- end -}}
+{{- if .Values.image.digest -}}
+{{- $image = printf "%s@%s" $image .Values.image.digest -}}
+{{- else if .Values.image.tag -}}
+{{- $image = printf "%s:%s" $image .Values.image.tag -}}
+{{- else if .Chart.AppVersion -}}
+{{- $image = printf "%s:%s" $image .Chart.AppVersion -}}
+{{- end -}}
+{{- else if kindIs "string" .Values.image -}}
+{{- $image = .Values.image -}}
+{{- end -}}
+{{- tpl $image . -}}
+{{- end }}
