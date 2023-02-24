@@ -84,7 +84,7 @@ args: ""
 volumeMounts: []
 # - mountPath: /data
 #   name: data-volume
-volumes: ""
+volumes: {}
 # volumes: |-
 #   - name: temp-data-volume
 #     emptyDir: {}
@@ -133,7 +133,7 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: ""
+affinity: {}
 
 livenessProbe:
   httpGet:
