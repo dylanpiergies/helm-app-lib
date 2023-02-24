@@ -24,6 +24,20 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
+Build the default fully qualified app name for, e.g. a sibling chart.
+This applies the same trimming logic as app-lib.fullname. This won't work if the related chart has its name or
+fullname overridden.
+*/}}
+{{- define "app-lib.relativeFullname" -}}
+{{- $name := .relativeName }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "app-lib.chart" -}}
