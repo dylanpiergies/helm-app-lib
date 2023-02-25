@@ -28,7 +28,16 @@ spec:
       {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 6 }}
     {{- end }}
     image: {{ include "app-lib.image" . | quote }}
+    {{- $imagePullPolicy := "" }}
+    {{- if .Values.global }}
+    {{- with .Values.global.imagePullPolicy }}
+    {{- $imagePullPolicy = . }}
+    {{- end }}
+    {{- end }}
     {{- with .Values.imagePullPolicy }}
+    {{- $imagePullPolicy = . }}
+    {{- end }}
+    {{- with $imagePullPolicy }}
     imagePullPolicy: {{ . }}
     {{- end }}
     {{- with .Values.command }}
