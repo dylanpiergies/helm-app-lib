@@ -76,7 +76,8 @@ spec:
       {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 6 }}
     {{- end }}
     {{- with .Values.volumeMounts }}
-      {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 6 }}
+    volumeMounts:
+      {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 4 }}
     {{- end }}
   {{- with .Values.nodeSelector }}
   nodeSelector:
@@ -92,6 +93,6 @@ spec:
   {{- end }}
   {{- with .Values.volumes }}
   volumes:
-    {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 4 }}
+    {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 2 }}
   {{- end }}
 {{- end -}}
