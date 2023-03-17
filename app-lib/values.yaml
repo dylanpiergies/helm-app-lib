@@ -78,6 +78,10 @@ extraEnv: {}
 # main `env` is undesirable, e.g. if `env` is a template string, but you want to merge map values from values within the
 # chart hierarchy.
 
+# Similar semantics to `env`, but using envFrom
+envFrom: {}
+extraEnvFrom: {}
+
 command: ""
 args: ""
 
@@ -95,6 +99,52 @@ volumes: {}
 #   - name: data-volume
 #     persistentVolumeClaim:
 #       claimName: {{ include "app-lib.fullname" . }}-data
+
+minReadySeconds: ""
+progressDeadlineSeconds: ""
+revisionHistoryLimit: ""
+
+activeDeadlineSeconds: ""
+automountServiceAccountToken: ""
+lifecycle: {}
+deploymentStrategy: {}
+stdin: ""
+stdinOnce: ""
+terminationMessagePath: ""
+terminationMessagePolicy: ""
+tty: ""
+volumeDevices: {}
+workingDir: ""
+
+dnsConfig: {}
+dnsPolicy: ""
+enableServiceLinks: ""
+ephemeralContainers: {}
+hostAliases: []
+hostIPC: ""
+hostNetwork: ""
+hostPID: ""
+hostUsers: ""
+hostname: ""
+nodeName: ""
+os: {}
+overhead: {}
+preemptionPolicy: ""
+priority: ""
+priorityClassName: ""
+readinessGates: []
+resourceClaims: []
+restartPolicy: ""
+runtimeClassName: ""
+schedulerName: ""
+schedulingGates: []
+setHostnameAsFQDN: ""
+shareProcessNamespace: ""
+subdomain: ""
+terminationGracePeriodSeconds: ""
+topologySpreadConstraints: []
+
+initContainers: []
 
 ingress:
   enabled: false
