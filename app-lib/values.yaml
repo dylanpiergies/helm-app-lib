@@ -144,6 +144,11 @@ subdomain: ""
 terminationGracePeriodSeconds: ""
 topologySpreadConstraints: []
 
+topologySpread:
+  whenRegionUnsatisfiable: ScheduleAnyway
+  whenZoneUnsatisfiable: ScheduleAnyway
+  whenHostnameUnsatisfiable: DoNotSchedule
+
 initContainers: []
 
 ingress:
