@@ -53,6 +53,7 @@ helm.sh/chart: {{ include "app-lib.chart" . }}
 {{ include "app-lib.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+app: {{ include "app-lib.fullname" . }}
 version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
