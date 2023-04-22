@@ -8,6 +8,7 @@
   {{ fail "Unknown controller type." }}
 {{- end }}
 {{ include "app-lib.service" . }}
+{{ include "app-lib.ingress" . }}
 {{ include "app-lib.hpa" . }}
 {{ include "app-lib.serviceaccount" . }}
 {{- end -}}
