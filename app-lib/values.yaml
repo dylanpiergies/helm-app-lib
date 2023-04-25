@@ -35,6 +35,8 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+containerNameOverride: ""
+
 containerPorts: |-
   - name: http
     containerPort: 8080

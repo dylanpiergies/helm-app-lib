@@ -21,7 +21,7 @@ spec:
   automountServiceAccountToken: {{ . }}
   {{- end }}
   containers:
-  - name: {{ .Chart.Name }}
+  - name: {{ .Values.containerNameOverride | default .Chart.Name }}
     {{- with .Values.args }}
     args:
     {{- include "app-lib.renderedValue" (set $ "value" .) | nindent 4 }}
