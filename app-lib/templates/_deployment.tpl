@@ -20,7 +20,7 @@ spec:
   {{- end }}
   {{- end }}
   {{- if not $autoscalingEnabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount | default 1 }}
   {{- end }}
   {{- with .Values.revisionHistoryLimit }}
   revisionHistoryLimit: {{ . }}
