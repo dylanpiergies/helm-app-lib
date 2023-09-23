@@ -29,11 +29,26 @@ This applies the same trimming logic as app-lib.fullname. This won't work if the
 fullname overridden.
 */}}
 {{- define "app-lib.relativeFullname" -}}
-{{- $name := .relativeName }}
+{{- $relativeFullnameOverride := "" }}
+{{- $relativeNameOverride := "" }}
+{{- $name := "" }}
+{{- if index .Values .relativeName }}
+{{- $relativeFullnameOverride = (index .Values .relativeName).fullnameOverride }}
+{{- $relativeNameOverride = (index .Values .relativeName).nameOverride }}
+{{- end }}
+{{- if $relativeFullnameOverride }}
+{{- $relativeFullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- if $relativeNameOverride }}
+{{- $name = $relativeNameOverride }}
+{{- else }}
+{{- $name = .relativeName }}
+{{- end }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- end }}
 {{- end }}
 
